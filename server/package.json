@@ -1,0 +1,25 @@
+{
+  "name": "buddy",
+  "version": "1.0.0",
+  "description": "An AI Chat Assistant app powered by the latest ChatGPT API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kevin Phan",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dattphan15/buddy.git"
+  },
+  "keywords": [
+    "ChatGPT"
+  ],
+  "bugs": {
+    "url": "https://github.com/dattphan15/buddy/issues"
+  },
+  "homepage": "https://github.com/dattphan15/buddy#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
