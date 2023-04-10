@@ -25,6 +25,9 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+import TodoList from './components/TodoList';
+
+
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
@@ -91,6 +94,7 @@ function App(): JSX.Element {
           </Section>
           <LearnMoreLinks />
         </View>
+      <TodoList />
       </ScrollView>
     </SafeAreaView>
   );
