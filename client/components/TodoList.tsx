@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, TextInput, Button, FlatList, Text } from 'react-native';
-
+import TodoCard from './TodoCard';
 
 const styles = StyleSheet.create({
   container: {
@@ -26,35 +26,39 @@ const styles = StyleSheet.create({
   },
 });
 
-
 interface Todo {
-  id: number;
+  id: string;
   text: string;
 }
-
 
 const TodoList = () => {
   const [text, setText] = useState('');
   const [todos, setTodos] = useState<Todo[]>([]);
 
   const addTodo = () => {
-    setTodos([...todos, { id: Date.now(), text }]);
+    setTodos([...todos, { id: Date.now().toString(), text }]);
     setText('');
   };
 
-  const handleSubmit = () => {
-    // Handle submission logic here
-    addTodo();
-    console.log('Submitted text:', text);
+  const handleDelete = (id: string) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
   };
+
+  const handleSubmit = () => {
+    addTodo();
+  };
+
+  const renderItem = ({ item }: { item: Todo }) => (
+    <TodoCard todo={item} onDelete={handleDelete} />
+  );
 
   return (
     <View style={styles.container}>
       <FlatList
         data={todos}
         extraData={todos}
-        renderItem={({ item }) => <Text>{item.text}</Text>}
-        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
       />
       <View style={styles.inputWrapper}>
         <TextInput

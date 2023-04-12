@@ -50,7 +50,6 @@ function App(): JSX.Element {
         style={{ backgroundColor: isDarkMode ? Colors.darker : Colors.lighter }}
         contentContainerStyle={{ justifyContent: 'space-between' }}
         >
-        <Header />
       </ScrollView>
       <View style={{ flex: 1, justifyContent: 'space-between' }}>
         <Text>Welcome to my Todo App!</Text>
