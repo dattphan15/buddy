@@ -1,15 +1,7 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React from 'react';
 import type {PropsWithChildren} from 'react';
 import {
   SafeAreaView,
-  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -45,18 +37,11 @@ function App(): JSX.Element {
 
   return (
     <SafeAreaView style={{ height: screenHeight }}>
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={{ backgroundColor: isDarkMode ? Colors.darker : Colors.lighter }}
-        contentContainerStyle={{ justifyContent: 'space-between' }}
-        >
-      </ScrollView>
       <View style={{ flex: 1, justifyContent: 'space-between' }}>
         <Text>Welcome to my Todo App!</Text>
         <TodoList />
       </View>
     </SafeAreaView>
-    
   );
 }
 

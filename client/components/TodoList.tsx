@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { StyleSheet, View, TextInput, Button, FlatList, Text } from 'react-native';
 import TodoCard from './TodoCard';
 
@@ -34,6 +34,7 @@ interface Todo {
 const TodoList = () => {
   const [text, setText] = useState('');
   const [todos, setTodos] = useState<Todo[]>([]);
+  const inputRef = useRef<TextInput>(null);
 
   const addTodo = () => {
     setTodos([...todos, { id: Date.now().toString(), text }]);
@@ -46,6 +47,7 @@ const TodoList = () => {
 
   const handleSubmit = () => {
     addTodo();
+    inputRef.current?.focus();
   };
 
   const renderItem = ({ item }: { item: Todo }) => (
@@ -62,11 +64,13 @@ const TodoList = () => {
       />
       <View style={styles.inputWrapper}>
         <TextInput
+          ref={inputRef}
           style={styles.input}
           onChangeText={setText}
           value={text}
           placeholder="Add a to-do item"
           onSubmitEditing={handleSubmit}
+          blurOnSubmit={false}
           returnKeyType="done"
         />
         <Button title="Add" onPress={addTodo} />

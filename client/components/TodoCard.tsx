@@ -9,13 +9,16 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
     backgroundColor: '#fff',
+    borderBottomWidth: 1,
+    borderBottomColor: '#eee',
   },
   text: {
     flex: 1,
     fontSize: 16,
+    color: '#333',
   },
   deleteBox: {
-    backgroundColor: 'red',
+    backgroundColor: '#ff3b30',
     justifyContent: 'center',
     alignItems: 'flex-end',
     paddingRight: 20,
