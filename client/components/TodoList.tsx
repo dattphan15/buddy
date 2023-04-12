@@ -6,9 +6,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
     padding: 20,
+    justifyContent: 'flex-end',
   },
   input: {
     borderWidth: 1,
@@ -16,8 +15,14 @@ const styles = StyleSheet.create({
     padding: 10,
     fontSize: 18,
     borderRadius: 6,
-    width: '100%',
+    width: '80%',
     marginBottom: 10,
+  },
+  inputWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
   },
 });
 
@@ -37,21 +42,31 @@ const TodoList = () => {
     setText('');
   };
 
+  const handleSubmit = () => {
+    // Handle submission logic here
+    addTodo();
+    console.log('Submitted text:', text);
+  };
+
   return (
     <View style={styles.container}>
-      <TextInput
-        style={styles.input}
-        onChangeText={setText}
-        value={text}
-        placeholder="Add a to-do item"
-      />
-      <Button title="Add" onPress={addTodo} />
       <FlatList
         data={todos}
         extraData={todos}
         renderItem={({ item }) => <Text>{item.text}</Text>}
         keyExtractor={(item) => item.id.toString()}
       />
+      <View style={styles.inputWrapper}>
+        <TextInput
+          style={styles.input}
+          onChangeText={setText}
+          value={text}
+          placeholder="Add a to-do item"
+          onSubmitEditing={handleSubmit}
+          returnKeyType="done"
+        />
+        <Button title="Add" onPress={addTodo} />
+      </View>
     </View>
   );
 };
