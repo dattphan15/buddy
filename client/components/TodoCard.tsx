@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text, Animated } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
+import CheckBox from '@react-native-community/checkbox';
 
 const styles = StyleSheet.create({
   container: {
@@ -16,6 +17,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     color: '#333',
+    marginLeft: 12,
   },
   deleteBox: {
     backgroundColor: '#ff3b30',
@@ -29,17 +31,26 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
   },
+  checkbox: {
+    width: 24,
+    height: 24,
+    marginRight: 16,
+  },
 });
 
-interface TodoCardProps {
-  todo: {
-    id: string;
-    text: string;
-  };
-  onDelete: (id: string) => void;
+interface Todo {
+  id: string;
+  text: string;
+  isDone: boolean;
 }
 
-const TodoCard = ({ todo, onDelete }: TodoCardProps) => {
+interface TodoCardProps {
+  todo: Todo;
+  onDelete: (id: string) => void;
+  onDone: (id: string) => void;
+}
+
+const TodoCard = ({ todo, onDelete, onDone }: TodoCardProps) => {
   const rightSwipe = (progress: Animated.AnimatedInterpolation, dragX: Animated.AnimatedInterpolation) => {
     const scale = dragX.interpolate({
       inputRange: [-100, 0],
@@ -66,7 +77,15 @@ const TodoCard = ({ todo, onDelete }: TodoCardProps) => {
       onSwipeableRightOpen={() => onDelete(todo.id)}
     >
       <View style={styles.container}>
-        <Text style={styles.text}>{todo.text}</Text>
+        <CheckBox
+          value={todo.isDone}
+          onValueChange={() => onDone(todo.id)}
+          style={styles.checkbox}
+          tintColor="#ccc"
+          onCheckColor="#007aff"
+          onTintColor="#007aff"
+        />
+        <Text style={[styles.text, todo.isDone ? { textDecorationLine: 'line-through' } : null]}>{todo.text}</Text>
       </View>
     </Swipeable>
   );

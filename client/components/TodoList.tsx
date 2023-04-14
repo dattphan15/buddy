@@ -24,25 +24,49 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
   },
+  separator: {
+    height: 1,
+    width: '100%',
+    backgroundColor: '#ddd',
+    marginBottom: 10,
+  },
 });
 
 interface Todo {
   id: string;
   text: string;
+  isDone: boolean;
 }
 
 const TodoList = () => {
   const [text, setText] = useState('');
   const [todos, setTodos] = useState<Todo[]>([]);
+  const [doneTodos, setDoneTodos] = useState<Todo[]>([]);
   const inputRef = useRef<TextInput>(null);
 
   const addTodo = () => {
-    setTodos([...todos, { id: Date.now().toString(), text }]);
+    setTodos([...todos, { id: Date.now().toString(), text, isDone: false }]);
     setText('');
   };
 
   const handleDelete = (id: string) => {
     setTodos(todos.filter((todo) => todo.id !== id));
+    setDoneTodos(doneTodos.filter((todo) => todo.id !== id)); // remove the todo from doneTodos as well
+  };
+
+  const handleDone = (id: string) => {
+    const newTodos = [...todos];
+    const todoIndex = newTodos.findIndex((todo) => todo.id === id);
+    if (todoIndex > -1) {
+      const todo = newTodos[todoIndex];
+      todo.isDone = !todo.isDone;
+      if (todo.isDone) {
+        setDoneTodos([...doneTodos, todo]);
+      } else {
+        setDoneTodos(doneTodos.filter((doneTodo) => doneTodo.id !== todo.id));
+      }
+      setTodos(newTodos);
+    }
   };
 
   const handleSubmit = () => {
@@ -51,7 +75,7 @@ const TodoList = () => {
   };
 
   const renderItem = ({ item }: { item: Todo }) => (
-    <TodoCard todo={item} onDelete={handleDelete} />
+    <TodoCard todo={item} onDelete={handleDelete} onDone={handleDone} />
   );
 
   return (
@@ -61,7 +85,20 @@ const TodoList = () => {
         extraData={todos}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
+        ItemSeparatorComponent={() => <View style={styles.separator} />}
       />
+      {doneTodos.length > 0 && (
+        <View>
+          <Text>Done:</Text>
+          <FlatList
+            data={doneTodos}
+            extraData={doneTodos}
+            renderItem={renderItem}
+            keyExtractor={(item) => item.id}
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
+          />
+        </View>
+      )}
       <View style={styles.inputWrapper}>
         <TextInput
           ref={inputRef}
@@ -70,8 +107,8 @@ const TodoList = () => {
           value={text}
           placeholder="Add a to-do item"
           onSubmitEditing={handleSubmit}
-          blurOnSubmit={false}
           returnKeyType="done"
+          blurOnSubmit={false}
         />
         <Button title="Add" onPress={addTodo} />
       </View>
