@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { StyleSheet, View, TextInput, Button, FlatList, Text } from 'react-native';
+import { StyleSheet, View, TextInput, Button, Text } from 'react-native';
+import { SwipeListView } from 'react-native-swipe-list-view';
 import TodoCard from './TodoCard';
 
 const styles = StyleSheet.create({
@@ -28,7 +29,29 @@ const styles = StyleSheet.create({
     height: 1,
     width: '100%',
     backgroundColor: '#ddd',
-    marginBottom: 10,
+    // marginBottom: 10,
+  },
+  rowBack: {
+    alignItems: 'center',
+    backgroundColor: '#fff',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 15,
+  },
+  deleteButton: {
+    backgroundColor: '#ff3b30',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 80,
+    height: '80%',
+    position: 'absolute',
+    right: 0,
+    marginVertical: 10,
+  },
+  deleteButtonText: {
+    color: '#fff',
+    fontSize: 16,
   },
 });
 
@@ -74,46 +97,61 @@ const TodoList = () => {
     inputRef.current?.focus();
   };
 
-  const renderItem = ({ item }: { item: Todo }) => (
-    <TodoCard todo={item} onDelete={handleDelete} onDone={handleDone} />
+  const renderHiddenItem = ({ item }: { item: Todo }) => (
+    <View style={styles.rowBack}>
+      <View style={styles.deleteButton}>
+        <Text
+          style={styles.deleteButtonText}
+          onPress={() => handleDelete(item.id)}
+        >
+          Delete
+        </Text>
+      </View>
+    </View>
   );
 
   return (
     <View style={styles.container}>
-      <FlatList
+      <SwipeListView
         data={todos}
-        extraData={todos}
-        renderItem={renderItem}
+        renderItem={({ item }) => (
+          <TodoCard todo={item} onDone={handleDone} />
+        )}
+        renderHiddenItem={renderHiddenItem}
         keyExtractor={(item) => item.id}
         ItemSeparatorComponent={() => <View style={styles.separator} />}
+        rightOpenValue={-80}
       />
       {doneTodos.length > 0 && (
         <View>
           <Text>Done:</Text>
-          <FlatList
+          <SwipeListView
             data={doneTodos}
-            extraData={doneTodos}
-            renderItem={renderItem}
+            renderItem={({ item }) => (
+              <TodoCard todo={item} onDone={handleDone} />
+            )}
+            renderHiddenItem={renderHiddenItem}
             keyExtractor={(item) => item.id}
             ItemSeparatorComponent={() => <View style={styles.separator} />}
-          />
-        </View>
-      )}
-      <View style={styles.inputWrapper}>
-        <TextInput
-          ref={inputRef}
-          style={styles.input}
-          onChangeText={setText}
-          value={text}
-          placeholder="Add a to-do item"
-          onSubmitEditing={handleSubmit}
-          returnKeyType="done"
-          blurOnSubmit={false}
+            rightOpenValue={-80}
         />
-        <Button title="Add" onPress={addTodo} />
       </View>
+    )}
+    <View style={styles.inputWrapper}>
+      <TextInput
+        ref={inputRef}
+        style={styles.input}
+        onChangeText={setText}
+        value={text}
+        placeholder="Add a to-do item"
+        onSubmitEditing={handleSubmit}
+        returnKeyType="done"
+        blurOnSubmit={false}
+      />
+      <Button title="Add" onPress={addTodo} />
     </View>
-  );
+  </View>
+);
 };
 
 export default TodoList;

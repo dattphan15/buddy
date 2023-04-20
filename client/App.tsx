@@ -38,7 +38,7 @@ function App(): JSX.Element {
   return (
     <SafeAreaView style={{ height: screenHeight }}>
       <View style={{ flex: 1, justifyContent: 'space-between' }}>
-        <Text>Welcome to my Todo App!</Text>
+        <Text>Reminders</Text>
         <TodoList />
       </View>
     </SafeAreaView>
