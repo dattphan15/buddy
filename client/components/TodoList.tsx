@@ -2,6 +2,8 @@ import React, { useState, useRef } from 'react';
 import { StyleSheet, View, TextInput, Button, Text } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import TodoCard from './TodoCard';
+import axios from 'axios';
+
 
 const styles = StyleSheet.create({
   container: {
@@ -70,6 +72,21 @@ const TodoList = () => {
   const addTodo = () => {
     setTodos([...todos, { id: Date.now().toString(), text, isDone: false }]);
     setText('');
+    addTodoItemToServer('yourUserId', text); // Replace 'yourUserId' with the actual user ID
+  };
+
+  const addTodoItemToServer = async (userId: string, item: string) => {
+    try {
+      const response = await axios.post('http://localhost:3001/todos', {
+        userId,
+        title: item,
+        description: '', // Add description input and pass it here
+        due_date: null, // Add date input and pass it here
+      });
+      console.log("New todo item added: ", response.data);
+    } catch (error) {
+      console.log("Error adding new todo item: ", error);
+    }
   };
 
   const handleDelete = (id: string) => {

@@ -20,7 +20,6 @@ import {
 
 import TodoList from './components/TodoList';
 
-
 type SectionProps = PropsWithChildren<{
   title: string;
 }>;
