@@ -72,15 +72,16 @@ const TodoList = () => {
   const addTodo = () => {
     setTodos([...todos, { id: Date.now().toString(), text, isDone: false }]);
     setText('');
-    addTodoItemToServer('yourUserId', text); // Replace 'yourUserId' with the actual user ID
+    addTodoItemToServer(1, text); // Replace 'yourUserId' with the actual user ID
   };
 
-  const addTodoItemToServer = async (userId: string, item: string) => {
+  const addTodoItemToServer = async (userId: number, item: string) => {
     try {
       const response = await axios.post('http://localhost:3001/todos', {
         userId,
         title: item,
         description: '', // Add description input and pass it here
+        completed: false,
         due_date: null, // Add date input and pass it here
       });
       console.log("New todo item added: ", response.data);

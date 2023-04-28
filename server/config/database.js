@@ -11,24 +11,6 @@ const pool = new Pool({
 
 const query = (text, params) => pool.query(text, params);
 
-const addTodoItem = async (userId, todoItem) => {
-  const text = `
-    INSERT INTO todos (user_id, item)
-    VALUES ($1, $2)
-    RETURNING *;
-  `;
-  const values = [userId, todoItem];
-  
-  try {
-    const result = await query(text, values);
-    return result.rows[0];
-  } catch (error) {
-    console.error('Err adding a new todo item:', error);
-    throw error;
-  }
-};
-
 module.exports = {
   query,
-  addTodoItem,
 };
